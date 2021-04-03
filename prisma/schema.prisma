@@ -1,0 +1,32 @@
+datasource db {
+  provider = "sqlite"
+  url = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Author {
+  id Int @id @default(autoincrement())
+  fullName String @unique
+  birthdate String 
+}
+
+model Publisher {
+  id Int @id @default(autoincrement())
+  name String @unique
+  foundationYear Int
+  site String
+}
+
+model Book {
+  id Int @id @default(autoincrement())
+  name String
+  price Float
+  quantity Int
+  author Author @relation(fields:[authorId], references:[id])
+  authorId Int
+  publisher Publisher @relation(fields:[publisherId], references:[id])
+  publisherId Int
+}
