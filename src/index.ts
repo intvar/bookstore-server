@@ -1,22 +1,14 @@
-import { GraphQLServer  } from 'graphql-yoga'
-import { PrismaClient } from '@prisma/client'
-import { Query } from './resolvers/Query'
-import { Book } from './resolvers/Book'
-import { Mutation } from './resolvers/Mutation'
+import { ApolloServer } from 'apollo-server'
+import { typeDefs } from './schema'
+import { resolvers } from './resolvers'
+import { createContext } from './context'
 
-    
-const prisma = new PrismaClient()
-
-const resolvers = {
-  Query,
-  Book,
-  Mutation
-}
-const server = new GraphQLServer({ 
-  typeDefs: './src/schema.graphql', 
+const server = new ApolloServer({
+  typeDefs,
   resolvers,
-  context: {
-    prisma
-  }
-})
-server.start(() => console.log('Server is running on localhost:4000'))
+  context: createContext
+});
+
+server.listen().then(({ url }) => {
+  console.log(`🚀  Server ready at ${url}`);
+});
