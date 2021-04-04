@@ -1,4 +1,8 @@
-function createBook(parent, args, context) {
+import { IFieldResolver } from 'apollo-server';
+import { Book as BookModel } from 'prisma/prisma-client';
+import { Context } from '../context';
+
+const createBook: IFieldResolver<BookModel, Context> = (parent, args, context) => {
   const book = args.book;
   return context.prisma.book.create({
     data: {
@@ -7,11 +11,11 @@ function createBook(parent, args, context) {
       quantity: book.quantity,
       author: { connect: { id: book.author_id } },
       publisher: { connect: { id: book.publisher_id } }
-    } 
-  })  
+    }
+  })
 }
 
-function updateBook(parent, args, context) {
+const updateBook: IFieldResolver<BookModel, Context> = (parent, args, context) => {
   const book = args.book;
   return context.prisma.book.update({
     where: { id: +book.id },
@@ -25,7 +29,7 @@ function updateBook(parent, args, context) {
   })
 }
 
-function deleteBook(parent, args, context) {
+const deleteBook: IFieldResolver<BookModel, Context> = (parent, args, context) => {
   return context.prisma.book.delete({
     where: {
       id: args.id

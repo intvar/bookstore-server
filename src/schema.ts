@@ -1,4 +1,6 @@
-type Publisher {
+import { gql } from 'apollo-server'
+
+export const typeDefs = gql`type Publisher {
   id: ID!
   name: String!
   foundationYear: Int!
@@ -21,7 +23,6 @@ type Book {
 }
 
 type Query {
-  hello(name: String): String!
   books: [Book!]!
 }
 
@@ -46,4 +47,4 @@ type Mutation {
   createBook(book: CreateBookInput!): Book!
   updateBook(book: UpdateBookInput!): Book!
   deleteBook(id: Int!): Book!
-}
+}`
